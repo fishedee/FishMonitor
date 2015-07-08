@@ -1,0 +1,37 @@
+{
+	"user":"www-data",
+	"network":{
+		"port":3124
+	},
+	"log":{
+		"path":"/tmp/monitor.log"
+	},
+	"monitor":{
+		"user_id":"1038076474442758",
+
+		"service":{
+			
+			"hhvm":{
+				"admin_port":"9999",
+				"error_log_path":"/var/log/hhvm/error.log",
+
+				"target":{
+					"load":"hhvm_load",
+					"queued":"hhvm_queued",
+					"error":"hhvm_error"
+				}	
+			},
+
+			"nginx":{
+				"access_log_path":"/var/log/nginx/access.log",
+				"error_log_path":"/var/log/nginx/error.log",
+
+				"target":{
+					"access":"nginx_access",
+					"error":"nginx_error"
+				}
+			}
+		}
+		
+	}
+}

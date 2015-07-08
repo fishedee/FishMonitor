@@ -1,0 +1,12 @@
+{
+	"name":"fishedee/FishMonitor",
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/fishedee/FishMonitor.git"
+        }
+    ],
+    "require": {
+        "workerman/workerman": "^3.1"
+    }
+}
