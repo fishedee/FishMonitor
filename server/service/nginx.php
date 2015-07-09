@@ -10,14 +10,14 @@ class Nginx{
 		$result = array();
 		$nginxTime = date('d/M/Y:H:i',$time);
 		
-		if( isset($this->config['target']['access']) ){
-			$accessCount = exec("cat ".$this->config['access_log_path'].' | grep "'.$nginxTime.'" | wc -c');
-			$result[ $this->config['target']['access'] ] = $accessCount;
+		if( isset($this->config['monitor']['access']) ){
+			$accessCount = exec("cat ".$this->config['config']['access_log_path'].' | grep "'.$nginxTime.'" | wc -c');
+			$result[ $this->config['monitor']['access'] ] = $accessCount;
 		}
 
-		if( isset($this->config['target']['error']) ){
-			$errorCount = exec("cat ".$this->config['error_log_path'].' | grep "'.$nginxTime.'" | wc -c');
-			$result[ $this->config['target']['error'] ] = $errorCount;
+		if( isset($this->config['monitor']['error']) ){
+			$errorCount = exec("cat ".$this->config['config']['error_log_path'].' | grep "'.$nginxTime.'" | wc -c');
+			$result[ $this->config['monitor']['error'] ] = $errorCount;
 		}
 		
 		return $result;

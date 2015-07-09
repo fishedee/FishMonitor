@@ -9,6 +9,7 @@
 		}
 
 		public function onWorkerStart(){
+			log_message('debug','monitor task start!');
 			sleep(50);
 			$controller = $this->controller;
 			\Workerman\Lib\Timer::add(60, function()use($controller){

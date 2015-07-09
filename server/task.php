@@ -4,7 +4,6 @@
 	use Workerman\Worker;
 	class Task{
 		var $user;
-		var $logPath;
 		var $port;
 
 		public function __construct($config){
@@ -17,13 +16,6 @@
 
 			//配置user
 			$this->user = $config->getUser();
-
-			//配置日志
-			$logConfig = $config->getLogConfig();
-			if( isset($logConfig['path']))
-				$this->logPath = $logConfig['path'];
-			else
-				$this->logPath = '';
 
 			//配置任务
 			if( $config->isStart() ){
@@ -41,9 +33,6 @@
 			if( $this->user != '')
 				$worker->user = $this->user;
 
-			if( $this->logPath != '')
-				$worker->stdoutFile = $this->logPath;
-
 			$worker->count = 1;
 
 			$worker->onWorkerStart = function()use($task){
@@ -59,13 +48,10 @@
 			//配置服务任务
 			$serviceConfig = $config->getServiceConfig();
 
-			foreach( $serviceConfig as $serviceName=>$singleServiceConfig ){
-				$task = new ServiceTask($serviceName,$singleServiceConfig,$this->port);
+			foreach( $serviceConfig as $singleServiceConfig ){
+				$task = new ServiceTask($singleServiceConfig,$this->port);
 
 				$worker = new Worker();
-
-				if( $this->logPath != '')
-					$worker->stdoutFile = $this->logPath;
 
 				$worker->count = 1;
 

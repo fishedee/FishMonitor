@@ -61,6 +61,8 @@
 						file_get_contents($argv[$i+1]),
 						true
 					);
+					if( $this->config == null )
+						throw new Exception('配置文件含有语法错误，不是合法的json格式');
 					return;
 				}
 			}

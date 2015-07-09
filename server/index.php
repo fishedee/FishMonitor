@@ -8,6 +8,9 @@
 		//启动config
 		$config = new Config();
 
+		//启动日志
+		$logger = new Log($config);
+
 		//启动Task
 		$task = new Task($config);
 
