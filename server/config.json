@@ -34,6 +34,23 @@
 					"access":"nginx_access",
 					"error":"nginx_error"
 				}
+			},
+			{
+				"name":"codeigniter",
+				"config":{
+					"log_path":"/var/www/BakeWeb/data/log/"
+				},
+				"monitor":{
+					"access":"server_access",
+					"error":"server_error",
+					"avg_execution_time":"server_avg_time",
+					"max_execution_time":"server_max_time",
+					"custom_1":{
+						"name":"server_custom_1",
+						"type":"log",
+						"cmd":"grep \"Final output\" | grep INFO | wc -l"
+					}
+				}
 			}
 		]
 		

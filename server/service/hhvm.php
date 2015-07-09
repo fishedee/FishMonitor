@@ -11,7 +11,7 @@ class Hhvm{
 		$hhvmTime = date('M j H:i',$time);
 	
 		if( isset($this->config['monitor']['error']) ){
-			$errorCount = exec("cat ".$this->config['config']['error_log_path'].' | grep "'.$hhvmTime.'" | wc -c');
+			$errorCount = exec("cat ".$this->config['config']['error_log_path'].' | grep "'.$hhvmTime.'" | wc -l');
 			$result[ $this->config['monitor']['error'] ] = $errorCount;
 		}
 
