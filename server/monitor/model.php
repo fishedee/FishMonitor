@@ -29,38 +29,49 @@
 						'machineIP'=>$this->machineIP
 					)
 				),
-				'timestamp'=>time()
+				'timestamp'=>intval(microtime(true)*1000)
 			);
+		}
+
+		public function updateValue($id,$value){
+			$this->data[$id]['value'] = $value;
+			$this->data[$id]['timestamp'] = intval(microtime(true)*1000);
 		}
 
 		public function add($id,$value,$info=array()){
 			$this->onceCreate($id,$value,$info);
 				
-			$this->data[$id]['value'] += $value;
-			$this->data[$id]['timestamp'] = time();
+			$this->updateValue(
+				$id,
+				$this->data[$id]['value'] + $value
+			);
 		}
 
 		public function max($id,$value,$info=array()){
 			$this->onceCreate($id,$value,$info);
 				
-			if( $value > $this->data[$id]['value'])
-				$this->data[$id]['value'] = $value;
-			$this->data[$id]['timestamp'] = time();
+			$this->updateValue(
+				$id,
+				max($this->data[$id]['value'],$value)
+			);
 		}
 
 		public function min($id,$value,$info=array()){
 			$this->onceCreate($id,$value,$info);
 				
-			if( $value < $this->data[$id]['value'])
-				$this->data[$id]['value'] = $value;
-			$this->data[$id]['timestamp'] = time();
+			$this->updateValue(
+				$id,
+				min($this->data[$id]['value'],$value)
+			);
 		}
 
 		public function set($id,$value,$info=array()){
 			$this->onceCreate($id,$value,$info);
 
-			$this->data[$id]['value'] = $value;
-			$this->data[$id]['timestamp'] = time();
+			$this->updateValue(
+				$id,
+				$value
+			);
 		}
 
 		private function clear(){
@@ -75,7 +86,7 @@
 				'namespace'=>"acs/custom/".$this->userId,
 				'metrics'=>json_encode(array_values($this->data))
 			);
-			log_message('debug','task monitor upload '.json_encode($postData));
+			log_message('debug','task monitor upload '.urldecode(http_build_query($postData)));
 			$this->post(
 				'http://open.cms.aliyun.com/metrics/put',
 				$postData
