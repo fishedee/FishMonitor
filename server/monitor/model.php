@@ -13,7 +13,7 @@
 				$this->userId = $monitorConfig['user_id'];
 			else
 				throw new Exception('配置文件中缺少指定monitor的user_id');
-			$machineIP = $config->getMachineIP();
+			$this->machineIP = $config->getMachineIP();
 		}
 
 		private function onceCreate($id,$value,$info){
@@ -22,7 +22,7 @@
 			$this->data[$id] = array(
 				'metricName'=>$id,
 				'value'=>$value,
-				'unit'=>'count',
+				'unit'=>'None',
 				'dimensions'=>array_merge(
 					$info,
 					array(
@@ -72,35 +72,21 @@
 				return;
 			$postData = array(
 				'userId'=>$this->userId,
-				'namespace'=>"ACS/CUSTOM/".$this->userId,
+				'namespace'=>"acs/custom/".$this->userId,
 				'metrics'=>json_encode(array_values($this->data))
 			);
+			log_message('debug','task monitor upload '.json_encode($postData));
 			$this->post(
 				'http://open.cms.aliyun.com/metrics/put',
-				http_build_query(($postData))
+				$postData
 			);
 			$this->clear();
 		}
 
 		private function post($url,$data){
-			$curl = curl_init();
-			curl_setopt($curl, CURLOPT_URL, $url);
-			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); 
-			curl_setopt($curl, CURLOPT_TIMEOUT_MS , 5000);
-			curl_setopt($curl, CURLOPT_NOSIGNAL, 1);
-			curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
-			curl_setopt($curl, CURLOPT_HEADER, false);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($curl, CURLOPT_CUSTOMREQUEST,'POST');
-			curl_setopt($curl, CURLOPT_POSTFIELDS,$data);
-			$data = curl_exec($curl);
-			$headerData = curl_getinfo($curl);
-			if( $data === false )
-				throw new Exception('连接服务器失败'.curl_error($curl),1);
-			if( $headerData['http_code'] != 200 )
-				throw new Exception('错误码不是200,错误码是'.$headerData['http_code']." ".$data,1);
-			curl_close($curl);
-			return $data;
+			$response = (new GuzzleHttp\Client())->post($url,array('form_params'=>$data,'http_errors' => false));
+			if( $response->getStatusCode() != 200 )
+				throw new Exception('错误码不是200,错误码是'.$response->getStatusCode()." ".$response->getBody()->getContents(),1);
 		}
 
 	};

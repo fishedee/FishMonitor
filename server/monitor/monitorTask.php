@@ -9,14 +9,13 @@
 		}
 
 		public function onWorkerStart(){
-			log_message('debug','monitor task start!');
-			sleep(50);
+			log_message('debug','task monitor start!');
 			$controller = $this->controller;
 			\Workerman\Lib\Timer::add(60, function()use($controller){
 				try{
 		        	$controller->refresh();
 		    	}catch(Exception $e){
-		    		log_message('error',"refresh error".$e->getMessage());
+		    		log_message('error',"refresh monitor error ".$e->getMessage());
 		    	}
 		    });
 		}

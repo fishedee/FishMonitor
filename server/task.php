@@ -28,7 +28,7 @@
 			//配置监控器任务
 			$task = new MonitorTask($config);
 
-			$worker = new Worker("http://0.0.0.0:".$this->port);
+			$worker = new Worker("http://127.0.0.1:".$this->port);
 
 			if( $this->user != '')
 				$worker->user = $this->user;

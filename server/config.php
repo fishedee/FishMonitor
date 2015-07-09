@@ -42,7 +42,10 @@
 		}
 
 		private function analyseIP(){
-			$contents = file_get_contents('http://1111.ip138.com/ic.asp');
+			$contents = (new GuzzleHttp\Client())
+							->get('http://1111.ip138.com/ic.asp')
+							->getBody()
+							->getContents();
 			preg_match('/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/',$contents,$matches);
 			$this->config['machineIP'] = $matches[0];
 		}

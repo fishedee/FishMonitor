@@ -21,17 +21,18 @@
 		}
 
 		public function onWorkerStart(){
-			log_message('debug','service '.$this->name.' task start!');
+			log_message('debug','task '.$this->name.' service start!');
 			$port = $this->port;
-			\Workerman\Lib\Timer::add(5, function()use($port){
+			\Workerman\Lib\Timer::add(60, function()use($port){
 				$result = $this->service->monitor();
+				log_message('debug','task '.$this->name.' service result : '.json_encode($result) );
 		    	foreach( $result as $key=>$value ){
-					$url = 'http://localhost:'.$port.'/set?';
-					$url .= http_build_query(array(
+					$url = 'http://localhost:'.$port.'/set';
+					$data = array(
 						'id'=>$key,
 						'value'=>$value
-					));
-					file_get_contents($url);
+					);
+					(new GuzzleHttp\Client())->get($url,array('query'=>$data));
 				}
 		    });
 		}
