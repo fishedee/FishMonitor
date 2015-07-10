@@ -6,7 +6,7 @@ class Hhvm{
 	}
 
 	public function monitor(){
-		$time = time();
+		$time = time() - 60;
 		$result = array();
 		$hhvmTime = date('M j H:i',$time);
 	

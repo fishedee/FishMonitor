@@ -6,7 +6,7 @@ class Nginx{
 	}
 
 	public function monitor(){
-		$time = time();
+		$time = time() - 60;
 		$result = array();
 		$nginxTime = date('d/M/Y:H:i',$time);
 		

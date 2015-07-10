@@ -6,7 +6,7 @@ class CodeIgniter{
 	}
 
 	public function monitor(){
-		$time = time();
+		$time = time() - 60;
 		$fileName = '"'.$this->config['config']['log_path'].'log-'.date('Y-m-d',$time).'.php'.'"';
 		$ciTime = '"'.date('Y-m-d H:i',$time).'"';
 		$result = array();
